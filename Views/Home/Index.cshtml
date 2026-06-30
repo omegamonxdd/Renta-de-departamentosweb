@@ -1,0 +1,190 @@
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<!-- ══════════════════════════════════════════════════
+     HERO SECTION — Pantalla completa con parallax zoom
+     ══════════════════════════════════════════════════ -->
+<section class="noctis-hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <!-- Badge animado -->
+                    <div class="hero-badge">
+                        <span class="dot"></span>
+                        Propiedades de Lujo en México
+                    </div>
+
+                    <!-- Título principal -->
+                    <h1 class="hero-title">
+                        Encuentra tu<br>
+                        <span class="accent">departamento</span><br>
+                        ideal hoy
+                    </h1>
+
+                    <!-- Subtítulo -->
+                    <p class="hero-subtitle">
+                        Gestiona, explora y administra propiedades premium de forma ágil y elegante. Bienvenido a Noctis Real State.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="hero-actions">
+                        <a asp-controller="Departamentos" asp-action="Disponibles" class="btn-cta" style="font-size:1rem;padding:.75rem 1.75rem;">
+                            <i class="bi bi-stars"></i> Ver Disponibles
+                        </a>
+                        <a asp-controller="Departamentos" asp-action="Buscar" class="btn-cta-outline" style="font-size:1rem;padding:.75rem 1.75rem;border-color:rgba(255,255,255,.5);color:rgba(255,255,255,.9)!important;">
+                            <i class="bi bi-search"></i> Buscar Ahora
+                        </a>
+                    </div>
+
+                    <!-- Stats rápidas -->
+                    <div class="d-flex gap-4 flex-wrap" style="color:rgba(255,255,255,.7);font-size:.88rem;">
+                        <div>
+                            <strong style="color:#fff;font-family:'Montserrat',sans-serif;font-size:1.5rem;font-weight:800;display:block;">+100</strong>
+                            Propiedades
+                        </div>
+                        <div style="width:1px;background:rgba(255,255,255,.2);"></div>
+                        <div>
+                            <strong style="color:#fff;font-family:'Montserrat',sans-serif;font-size:1.5rem;font-weight:800;display:block;">10+</strong>
+                            Ciudades
+                        </div>
+                        <div style="width:1px;background:rgba(255,255,255,.2);"></div>
+                        <div>
+                            <strong style="color:#fff;font-family:'Montserrat',sans-serif;font-size:1.5rem;font-weight:800;display:block;">5★</strong>
+                            Calidad
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     FILTRO FLOTANTE
+     ══════════════════════════════════════════════════ -->
+<div class="container">
+    <div class="hero-filter-card">
+        <form asp-controller="Departamentos" asp-action="Buscar" method="get">
+            <div class="row g-3 align-items-end">
+                <div class="col-lg-3 col-md-6">
+                    <label class="filter-label">Ciudad</label>
+                    <input type="text" name="ciudad" class="form-control" placeholder="Ej. Mérida, CDMX…">
+                </div>
+                <div class="col-lg-3 col-md-6">
+                    <label class="filter-label">Colonia</label>
+                    <input type="text" name="colonia" class="form-control" placeholder="Ej. Polanco, Centro…">
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <label class="filter-label">Estado</label>
+                    <select name="estado" class="form-select">
+                        <option value="">Todos</option>
+                        <option value="Disponible">Disponible</option>
+                        <option value="Rentado">Rentado</option>
+                        <option value="Mantenimiento">Mantenimiento</option>
+                    </select>
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <label class="filter-label">Precio mín.</label>
+                    <input type="number" name="precioMin" class="form-control" placeholder="$0">
+                </div>
+                <div class="col-lg-2 col-md-4">
+                    <button type="submit" class="btn-cta w-100" style="justify-content:center;padding:.65rem 1rem;">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     PANEL DE CONTROL
+     ══════════════════════════════════════════════════ -->
+<section class="py-5">
+    <div class="container">
+
+        <!-- Section Header -->
+        <div class="mb-5 reveal">
+            <span class="section-tag">
+                <i class="bi bi-grid-3x3-gap-fill me-1"></i> Panel de Gestión
+            </span>
+            <h2 class="section-title">Administra tu portafolio</h2>
+            <p class="section-subtitle">
+                Accede rápidamente a cada módulo del sistema de gestión inmobiliaria.
+            </p>
+        </div>
+
+        <!-- Cards -->
+        <div class="row g-4">
+
+            <!-- Disponibles -->
+            <div class="col-md-6 col-lg-3 reveal reveal-delay-1">
+                <div class="dash-card">
+                    <div class="dash-icon">
+                        <i class="bi bi-check2-circle"></i>
+                    </div>
+                    <p class="dash-title">Disponibles</p>
+                    <p class="dash-desc">
+                        Explora los departamentos listos para ser habitados de inmediato.
+                    </p>
+                    <a asp-controller="Departamentos" asp-action="Disponibles" class="btn-cta w-100" style="justify-content:center;">
+                        Ver Disponibles <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Nuevo Registro -->
+            <div class="col-md-6 col-lg-3 reveal reveal-delay-2">
+                <div class="dash-card">
+                    <div class="dash-icon">
+                        <i class="bi bi-plus-circle"></i>
+                    </div>
+                    <p class="dash-title">Nuevo Registro</p>
+                    <p class="dash-desc">
+                        Agrega una nueva propiedad al catálogo con todos sus detalles.
+                    </p>
+                    <a asp-controller="Departamentos" asp-action="Create" class="btn-cta w-100" style="justify-content:center;">
+                        Registrar <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Administración -->
+            <div class="col-md-6 col-lg-3 reveal reveal-delay-3">
+                <div class="dash-card">
+                    <div class="dash-icon">
+                        <i class="bi bi-kanban"></i>
+                    </div>
+                    <p class="dash-title">Administración</p>
+                    <p class="dash-desc">
+                        Consulta, edita, elimina o cambia el estado de las propiedades.
+                    </p>
+                    <a asp-controller="Departamentos" asp-action="Index" class="btn-cta w-100" style="justify-content:center;">
+                        Gestionar <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Búsqueda Avanzada -->
+            <div class="col-md-6 col-lg-3 reveal reveal-delay-4">
+                <div class="dash-card">
+                    <div class="dash-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <p class="dash-title">Búsqueda Avanzada</p>
+                    <p class="dash-desc">
+                        Busca propiedades por ciudad, colonia, estado o rango de precios.
+                    </p>
+                    <a asp-controller="Departamentos" asp-action="Buscar" class="btn-cta w-100" style="justify-content:center;">
+                        Buscar <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

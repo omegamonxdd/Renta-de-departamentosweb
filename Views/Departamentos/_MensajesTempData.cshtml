@@ -1,0 +1,22 @@
+@* Partial reutilizable: muestra los mensajes TempData["Success"] / TempData["Error"]
+   establecidos por DepartamentosController tras operaciones de Create/Edit/Delete/CambiarEstado. *@
+
+@if (TempData["Success"] != null)
+{
+    <div class="noctis-alert noctis-alert-success alert-dismissible fade show mb-4" role="alert" data-auto-dismiss>
+        <i class="bi bi-check-circle-fill fs-5 flex-shrink-0"></i>
+        <div>@TempData["Success"]</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Cerrar"
+                style="filter:none;opacity:.6;align-self:flex-start;"></button>
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="noctis-alert noctis-alert-danger alert-dismissible fade show mb-4" role="alert" data-auto-dismiss>
+        <i class="bi bi-exclamation-triangle-fill fs-5 flex-shrink-0"></i>
+        <div>@TempData["Error"]</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Cerrar"
+                style="filter:none;opacity:.6;align-self:flex-start;"></button>
+    </div>
+}

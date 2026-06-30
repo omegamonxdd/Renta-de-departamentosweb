@@ -1,0 +1,97 @@
+@model IEnumerable<RentaDepartamentosWeb.Models.Departamento>
+
+@* Partial reutilizable: tabla administrativa de departamentos con columna de Opciones
+   (Ver detalles, Editar, Cambiar estado, Eliminar). Usado por Index.cshtml y Buscar.cshtml
+   tal como lo solicita el Prompt 9 y el Prompt 11. *@
+
+@if (!Model.Any())
+{
+    <div class="empty-state">
+        <i class="bi bi-inbox empty-icon"></i>
+        <h3 class="h5 fw-bold mt-3" style="color:var(--color-dark)">Sin resultados</h3>
+        <p>No se encontraron departamentos.</p>
+    </div>
+}
+else
+{
+    <div class="admin-table-wrapper">
+        <table class="table admin-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Dirección</th>
+                    <th>Colonia</th>
+                    <th>Ciudad</th>
+                    <th class="text-center">
+                        <i class="bi bi-door-closed" title="Habitaciones"></i>
+                    </th>
+                    <th class="text-center">
+                        <i class="bi bi-droplet" title="Baños"></i>
+                    </th>
+                    <th class="text-end">Precio</th>
+                    <th>Estado</th>
+                    <th>Arrendatario</th>
+                    <th>Inicio renta</th>
+                    <th class="text-center">Opciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var depto in Model)
+                {
+                    var estadoBadgeClass = depto.Estado switch
+                    {
+                        "Disponible"    => "badge-disponible",
+                        "Rentado"       => "badge-rentado",
+                        "Mantenimiento" => "badge-mantenimiento",
+                        _               => "badge-otro"
+                    };
+
+                    <tr>
+                        <td style="color:var(--color-slate-400);font-size:.85rem;">#@depto.Id</td>
+                        <td style="font-weight:600;">@depto.Direccion</td>
+                        <td>@depto.Colonia</td>
+                        <td>@depto.Ciudad</td>
+                        <td class="text-center">@depto.Habitaciones</td>
+                        <td class="text-center">@depto.Banios</td>
+                        <td class="text-end" style="font-family:'Montserrat',sans-serif;font-weight:700;color:var(--color-accent);">
+                            @depto.PrecioRenta.ToString("C0")
+                        </td>
+                        <td>
+                            <span class="noctis-badge @estadoBadgeClass">@depto.Estado</span>
+                        </td>
+                        <td>@(string.IsNullOrWhiteSpace(depto.Arrendatario) ? "—" : depto.Arrendatario)</td>
+                        <td style="font-size:.85rem;color:var(--color-slate-600);">
+                            @(depto.FechaInicioRenta?.ToString("dd/MM/yyyy") ?? "—")
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center gap-1 flex-wrap">
+                                <a asp-action="Details" asp-route-id="@depto.Id"
+                                   class="btn-icon btn-icon-view" title="Ver detalles">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-action="Edit" asp-route-id="@depto.Id"
+                                   class="btn-icon btn-icon-edit" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <button type="button" class="btn-icon btn-icon-state btn-cambiar-estado"
+                                        title="Cambiar estado"
+                                        data-bs-toggle="modal" data-bs-target="#modalCambiarEstado"
+                                        data-id="@depto.Id"
+                                        data-direccion="@depto.Direccion"
+                                        data-estado="@depto.Estado"
+                                        data-arrendatario="@depto.Arrendatario"
+                                        data-fecha="@(depto.FechaInicioRenta?.ToString("yyyy-MM-dd"))">
+                                    <i class="bi bi-arrow-repeat"></i>
+                                </button>
+                                <a asp-action="Delete" asp-route-id="@depto.Id"
+                                   class="btn-icon btn-icon-delete" title="Eliminar">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

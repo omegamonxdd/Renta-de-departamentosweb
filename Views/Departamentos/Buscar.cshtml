@@ -1,0 +1,94 @@
+@model IEnumerable<RentaDepartamentosWeb.Models.Departamento>
+
+@{
+    ViewData["Title"] = "Búsqueda de Departamentos";
+}
+
+<div class="page-wrapper fade-in-up">
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header mb-4">
+            <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+                <div>
+                    <div class="page-header-icon">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    <h1>Búsqueda Avanzada</h1>
+                    <p>Filtra por ciudad, colonia, estado o rango de precio. Todos los filtros son opcionales y combinables.</p>
+                </div>
+                <a asp-action="Index" class="btn-neutral" style="align-self:center;">
+                    <i class="bi bi-arrow-left"></i> Volver al listado
+                </a>
+            </div>
+        </div>
+
+        <partial name="_MensajesTempData" />
+
+        <!-- Filtro Card -->
+        <div class="filter-card reveal">
+            <form asp-action="Buscar" method="get">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-3">
+                        <label for="ciudad" class="form-label">Ciudad</label>
+                        <input type="text" id="ciudad" name="ciudad" class="form-control"
+                               value="@ViewData["Ciudad"]" placeholder="Ej. Mérida" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="colonia" class="form-label">Colonia</label>
+                        <input type="text" id="colonia" name="colonia" class="form-control"
+                               value="@ViewData["Colonia"]" placeholder="Ej. Centro" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="estado" class="form-label">Estado</label>
+                        @{
+                            var estadoActual = ViewData["Estado"]?.ToString() ?? "";
+                        }
+                        <select id="estado" name="estado" class="form-select">
+                            <option value="" selected="@(estadoActual == "" ? "selected" : null)">Todos</option>
+                            <option value="Disponible" selected="@(estadoActual == "Disponible" ? "selected" : null)">Disponible</option>
+                            <option value="Rentado" selected="@(estadoActual == "Rentado" ? "selected" : null)">Rentado</option>
+                            <option value="Mantenimiento" selected="@(estadoActual == "Mantenimiento" ? "selected" : null)">Mantenimiento</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="precioMin" class="form-label">Precio mín.</label>
+                        <input type="number" step="0.01" min="0" id="precioMin" name="precioMin" class="form-control"
+                               value="@ViewData["PrecioMin"]" placeholder="$0.00" />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label for="precioMax" class="form-label">Precio máx.</label>
+                        <input type="number" step="0.01" min="0" id="precioMax" name="precioMax" class="form-control"
+                               value="@ViewData["PrecioMax"]" placeholder="$0.00" />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mt-4">
+                    <a asp-action="Buscar" class="btn-neutral">
+                        <i class="bi bi-x-circle"></i> Limpiar filtros
+                    </a>
+                    <button type="submit" class="btn-cta">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Resultados -->
+        <div class="d-flex align-items-center gap-2 mb-3">
+            <span class="section-icon-wrap" style="width:38px;height:38px;">
+                <i class="bi bi-list-check" style="font-size:1.1rem;"></i>
+            </span>
+            <h2 class="h5 fw-bold mb-0 font-montserrat">Resultados <span style="color:var(--color-accent);">(@Model.Count())</span></h2>
+        </div>
+
+        <partial name="_TablaDepartamentos" model="Model" />
+
+    </div>
+</div>
+
+<partial name="CambiarEstado" />

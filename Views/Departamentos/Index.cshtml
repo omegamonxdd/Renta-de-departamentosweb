@@ -1,0 +1,33 @@
+@model IEnumerable<RentaDepartamentosWeb.Models.Departamento>
+
+@{
+    ViewData["Title"] = "Administración de Departamentos";
+}
+
+<div class="page-wrapper fade-in-up">
+    <div class="container">
+
+        <!-- Page Header -->
+        <div class="page-header mb-4">
+            <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+                <div>
+                    <div class="page-header-icon">
+                        <i class="bi bi-kanban"></i>
+                    </div>
+                    <h1>Administración de Departamentos</h1>
+                    <p>Consulta, edita, elimina o cambia el estado de las propiedades registradas.</p>
+                </div>
+                <a asp-action="Create" class="btn-cta" style="align-self:center;">
+                    <i class="bi bi-plus-circle-fill"></i> Registrar Departamento
+                </a>
+            </div>
+        </div>
+
+        <partial name="_MensajesTempData" />
+
+        <partial name="_TablaDepartamentos" model="Model" />
+
+    </div>
+</div>
+
+<partial name="CambiarEstado" />

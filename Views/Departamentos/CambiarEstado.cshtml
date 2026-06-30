@@ -1,0 +1,97 @@
+@* Modal de Bootstrap para "Cambiar estado del departamento" (Prompt 12).
+   Se incluye una sola vez en Index.cshtml y se rellena dinámicamente vía JavaScript
+   a partir de los data-* del botón "Cambiar estado" de cada fila (ver _TablaDepartamentos.cshtml).
+   Hace POST a DepartamentosController.CambiarEstado(), que a su vez invoca
+   IDepartamentoService.CambiarEstadoDepartamento() respetando las reglas de negocio del Prompt 6:
+   - El estado debe ser Disponible/Rentado/Mantenimiento.
+   - Si el nuevo estado es "Rentado", el arrendatario es obligatorio.
+   - Si el nuevo estado es "Disponible" o "Mantenimiento", arrendatario y fecha se limpian. *@
+
+<div class="modal fade" id="modalCambiarEstado" tabindex="-1" aria-labelledby="modalCambiarEstadoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form asp-controller="Departamentos" asp-action="CambiarEstado" method="post" id="formCambiarEstado">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" id="ceId" value="" />
+
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalCambiarEstadoLabel">
+                        <i class="bi bi-arrow-repeat me-2" style="color:var(--color-accent);"></i>Cambiar estado
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p class="mb-3" style="font-size:.9rem;color:var(--color-slate-600);">
+                        Departamento: <strong id="ceDireccion" style="color:var(--color-dark);">—</strong>
+                    </p>
+
+                    <div class="mb-3">
+                        <label for="ceEstado" class="form-label">Nuevo estado</label>
+                        <select name="nuevoEstado" id="ceEstado" class="form-select" required>
+                            <option value="Disponible">Disponible</option>
+                            <option value="Rentado">Rentado</option>
+                            <option value="Mantenimiento">Mantenimiento</option>
+                        </select>
+                    </div>
+
+                    <div id="ceGrupoArrendatario">
+                        <div class="mb-3">
+                            <label for="ceArrendatario" class="form-label">Nombre del arrendatario</label>
+                            <input type="text" name="arrendatario" id="ceArrendatario" class="form-control"
+                                   placeholder="Obligatorio si el estado es Rentado" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="ceFechaInicioRenta" class="form-label">Fecha de inicio de renta</label>
+                            <input type="date" name="fechaInicioRenta" id="ceFechaInicioRenta" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn-neutral" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn-cta">
+                        <i class="bi bi-check2-circle"></i> Guardar cambio
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const modal = document.getElementById('modalCambiarEstado');
+        const ceEstado = document.getElementById('ceEstado');
+        const ceGrupoArrendatario = document.getElementById('ceGrupoArrendatario');
+        const ceArrendatario = document.getElementById('ceArrendatario');
+        const ceFecha = document.getElementById('ceFechaInicioRenta');
+
+        function actualizarVisibilidad() {
+            const esRentado = ceEstado.value === 'Rentado';
+            ceGrupoArrendatario.style.display = esRentado ? '' : 'none';
+            ceArrendatario.required = esRentado;
+            if (!esRentado) {
+                ceArrendatario.value = '';
+                ceFecha.value = '';
+            }
+        }
+
+        ceEstado.addEventListener('change', actualizarVisibilidad);
+
+        // Se dispara cada vez que un botón "Cambiar estado" abre el modal (data-bs-toggle).
+        modal.addEventListener('show.bs.modal', function (event) {
+            const boton = event.relatedTarget;
+            if (!boton) return;
+
+            document.getElementById('ceId').value = boton.getAttribute('data-id') || '';
+            document.getElementById('ceDireccion').textContent = boton.getAttribute('data-direccion') || '—';
+            ceEstado.value = boton.getAttribute('data-estado') || 'Disponible';
+            ceArrendatario.value = boton.getAttribute('data-arrendatario') || '';
+            ceFecha.value = boton.getAttribute('data-fecha') || '';
+
+            actualizarVisibilidad();
+        });
+    })();
+</script>
